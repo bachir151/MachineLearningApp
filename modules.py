@@ -8,10 +8,10 @@ from bs4 import BeautifulSoup
 # NLP
 import nltk
 import spacy
-"""nltk.download('punkt')
+nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('stopwords')
-nltk.download('averaged_perceptron_tagger')"""
+nltk.download('averaged_perceptron_tagger')
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -86,37 +86,6 @@ def final_preprocessing(texte):
     return join_text
 
 
-texte = """How to allow Python.app to firewall on Mac OS X? <p>When I run a python application on Mac, it shows many dialogs about want "Python.app" to accept incoming network connections.</p>
-
-<p>Even I Allow it many times, it shows again and again.</p>
-
-<p>How to allow it one time and not show any more?</p>
-
-<p><a href="https://i.stack.imgur.com/AOWy3.png" rel="noreferrer"><img src="https://i.stack.imgur.com/AOWy3.png" alt="enter image description here"></a></p>
-
-<hr>
-
-<h1>Edit</h1>
-
-<p>I found this question:
-<a href="https://stackoverflow.com/questions/19688841/add-python-to-os-x-firewall-options">Add Python to OS X Firewall Options?</a></p>
-
-<p>I followed the accepted answer to do but finally when I run <code>codesign -s "My Signing Identity" -f $(which python)</code>, it said:</p>
-
-<pre><code>/usr/bin/python: replacing existing signature
-error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate: can't create output file: /usr/bin/python.cstemp (Operation not permitted)
-/usr/bin/python: the codesign_allocate helper tool cannot be found or used
-</code></pre>
-
-<p>How to do next?</p>  C# """
-
-texte1 = """ excel cell date apache apache file date switch cell case cell type value value cell break value type return value cell type row c row c c string date date date date fix problem',
- 'validation error path require document mongodb path email path require path email user schema var new schema number type string type string email type string admin date date string save user object var user email password field null email null admin save user function err err console log user err user user return validation error value',
- 'plan application wonder thanks',
- 'execute laravel command version laravel follow command git bash php user table table user trigger follow error input file number thing find site work suggestion work',
- 'position property custom desire font size color code self self self uicolor self font self uicolor alpha self self navigation bar bar button result text center origin label effect' """
-
-
 def predict_tags (texte) :
     tfidf_vectorizer = joblib.load('tfidf_vectorizer_100_words.joblib')
     multilabel_binarizer = joblib.load("multilabel_100_words.joblib")
@@ -135,46 +104,3 @@ def predict_tags (texte) :
         tags = "Pas de tags prédits pour ce problème"
     return tags
 
-"""
-texte =preprocessing(texte, rejoin=True)
-print(texte)
-print('-----------------------------------------------------------------------------------------------------------------------------------------------------------')
-text2=final_preprocessing(texte)
-print(text2)
-print([text2])
-print('-------------------------- Final-----------------------------------------------------------')
-print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-#print (predict_tags (text2))
-
-multilabel_binarizer = joblib.load("multilabel.joblib")
-model = joblib.load("logit_tdidf.joblib")
-#X_test = joblib.load("X_tfidf_test.joblib")
-tfidf_vectorizer = joblib.load('tfidf_vectorizer.joblib')
-
-
-
-#1----Phase de processing du texte et de création de la matrice bag of words pour le texe entré
-texte_tfidf = tfidf_vectorizer.transform([text2])  # Transformation du texte avec le modèle
-feature_names_tfidf = tfidf_vectorizer.get_feature_names()  # Récupération des features du tfidf
-X_tfidf_input = pd.DataFrame(texte_tfidf.toarray(), columns=feature_names_tfidf)  # Trnsformation du texte entré en dataframe
-
-print(X_tfidf_input)  # Affichage du texte
-
-#2--- Une fois la matrice bag of words du texte créé, on donne le texte au modèle pour faire des prédictions
-prediction = model.predict(X_tfidf_input)  #Prédiction par le modèle, le modèle renvoie des entiers au lieu des vrais tags
-tags_predict = multilabel_binarizer.inverse_transform(prediction) # récupéaration des vrais
-tags = list({tag for tag_list in tags_predict for tag in tag_list if (len(tag_list) != 0)})
-print('---------------------------------------------------Tags---------------------------------------------------------')
-print(tags_predict)
-
-
-
-
-
-#feature_names_tfidf = tfidf_vectorizer.get_feature_names()
-#X_tfidf_input = pd.DataFrame(text3_tfidf.todense(), columns=feature_names_tfidf)
-
-#print(X_tfidf_input.shape)
-
-
-"""
