@@ -19,7 +19,7 @@ from nltk.corpus import stopwords
 import joblib
 
 global nlp
-nlp = spacy.load("en_core_web_sm")
+nlp = spacy.load("en_core_web_md")
 
 def preprocessing(texte, rejoin=True):
         """
@@ -178,7 +178,3 @@ print(tags_predict)
 
 
 """
-
-import numpy as np
-
-print("Version de NumPy :", np.__version__)
