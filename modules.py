@@ -1,5 +1,6 @@
 # Manipualtion des données
 import pandas as pd
+import numpy as np
 import sklearn
 # Représentation graphique
 # Netooyage du texte
@@ -17,8 +18,10 @@ from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 import joblib
+import gensim.corpora as corpora
 
 global nlp
+
 nlp = spacy.load("en_core_web_sm")
 
 def preprocessing(texte, rejoin=True):
@@ -86,7 +89,7 @@ def final_preprocessing(texte):
     return join_text
 
 
-def predict_tags (texte) :
+"""def predict_tags (texte) :
     tfidf_vectorizer = joblib.load('tfidf_vectorizer_100_words.joblib')
     multilabel_binarizer = joblib.load("multilabel_100_words.joblib")
     model = joblib.load("logit_tdidf_100_words.joblib")
@@ -102,5 +105,49 @@ def predict_tags (texte) :
 
     if len(tags) == 0:
         tags = "Pas de tags prédits pour ce problème"
-    return tags
+    return tags"""
 
+def predict_tags (texte) :
+    tfidf_vectorizer = joblib.load('tfidf_vectorizer_100_words.joblib')
+    multilabel_binarizer = joblib.load("multilabel_100_words.joblib")
+    model = joblib.load("logit_tdidf_100_words.joblib")
+    dict_tag =joblib.load("dict_tag.joblib")
+    texte = [texte]
+    texte_tfidf = tfidf_vectorizer.transform(texte)
+
+    feature_names_tfidf = tfidf_vectorizer.get_feature_names()
+    X_tfidf_input = pd.DataFrame(texte_tfidf.toarray(), columns=feature_names_tfidf)
+
+    y_pred_test_proba =model.predict_proba(X_tfidf_input)
+
+    # Récupérer les noms de toutes les classes (tags) dans l'ordre donné par MultiLabelBinarizer
+    all_classes= multilabel_binarizer.classes_
+
+    # Nombre de classes à afficher (dans ce cas, les 3 premières prédictions)
+    num_predictions_to_show = 5
+    # Obtenir le nombre d'exemples dans X_test
+    num_doc = X_tfidf_input.shape[0]
+
+    # Boucler sur chaque exemple de l'ensemble de test pour afficher les prédictions
+    for i in range(num_doc):
+        tags1 = []
+        # Récupérer les probabilités prédites pour le document i
+        predicted_probs_i = y_pred_test_proba[i]
+
+        # Trier les indices des classes par probabilités prédites (ordre décroissant)
+        top_indices = np.argsort(predicted_probs_i)[::-1]
+
+        # Récupérer les 5 premiers indices (les trois classes avec les probabilités les plus élevées)
+        top_indices = top_indices[:num_predictions_to_show]
+
+        # Récupérer les noms des 5 classes avec les probabilités les plus élevées
+        top_classes = all_classes[top_indices]
+
+        # Récupérer les probabilités correspondantes aux trois classes
+        top_probs = predicted_probs_i[top_indices]
+
+
+        for j in range(num_predictions_to_show):
+            tags1.append(top_classes[j])
+
+    return tags1
