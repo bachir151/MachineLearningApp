@@ -112,7 +112,6 @@ def predict_tags (texte) :
     multilabel_binarizer = joblib.load("multilabel_100_words.joblib")
     model = joblib.load("logit_tdidf_100_words.joblib")
     #model = joblib.load("rfc_final_model.joblib")
-    dict_tag =joblib.load("dict_tag.joblib")
     texte = [texte]
     texte_tfidf = tfidf_vectorizer.transform(texte)
 
