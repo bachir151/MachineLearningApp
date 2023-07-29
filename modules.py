@@ -19,7 +19,7 @@ from nltk.corpus import stopwords
 import joblib
 
 global nlp
-nlp = spacy.load("en_core_web_md")
+nlp = spacy.load("en_core_web_sm")
 
 def preprocessing(texte, rejoin=True):
         """
