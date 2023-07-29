@@ -9,10 +9,10 @@ from bs4 import BeautifulSoup
 # NLP
 import nltk
 import spacy
-#nltk.download('punkt')
-#nltk.download('wordnet')
-#nltk.download('stopwords')
-#nltk.download('averaged_perceptron_tagger')
+nltk.download('punkt')
+nltk.download('wordnet')
+nltk.download('stopwords')
+nltk.download('averaged_perceptron_tagger')
 from nltk.corpus import wordnet
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import sent_tokenize, word_tokenize
