@@ -1,6 +1,7 @@
 numpy == 1.21.6
 pandas
 lxml
+gunicorn
 bs4
 nltk
 spacy
